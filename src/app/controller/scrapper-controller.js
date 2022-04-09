@@ -15,11 +15,10 @@ exports.resolveMediaUrl = async (req, res) => {
         });
     }
 
-    // const {url} = REQUEST_BODY;
-    // console.log(url);
+    const mediaUrlPayload = await scrapMediaLinks(REQUEST_BODY);
+    console.log(mediaUrlPayload);
 
-    const urlList = await scrapMediaLinks(REQUEST_BODY);
-    console.log('urls \n ', urlList);
+    // ToDo: send proper response if urls are not scrapped
 
     res.status(200).send({
         statusCode: res.statusCode,

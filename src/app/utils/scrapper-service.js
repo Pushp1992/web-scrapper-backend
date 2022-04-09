@@ -47,6 +47,7 @@ async function getListOfMediaUrl(webUrl) {
                     imgList.push(mediaObj);
 
                     payloadObject.id = domainName;
+                    payloadObject.url = webUrl,
                     payloadObject.name = domainName;
                     payloadObject.imgUrlList = imgList;
 
@@ -55,6 +56,7 @@ async function getListOfMediaUrl(webUrl) {
                     imgList.push(mediaObj);
 
                     payloadObject.id = domainName;
+                    payloadObject.url = webUrl,
                     payloadObject.name = domainName;
                     payloadObject.imgUrlList = imgList;
                 }
@@ -71,6 +73,7 @@ async function getListOfMediaUrl(webUrl) {
                     videoList.push({ ...mediaObj, videourl: videoAbsoulteUrl });
 
                     payloadObject.id = domainName;
+                    payloadObject.url = webUrl,
                     payloadObject.name = domainName;
                     payloadObject.videoUrlList = videoList;
                 });

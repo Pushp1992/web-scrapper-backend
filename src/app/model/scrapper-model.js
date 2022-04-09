@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 
 const MediaScrapperSchema = mongoose.Schema(
     {
+        id: String,
+        url: String,
+        name: String,
         imageList: Array,
         videoList: Array
     },

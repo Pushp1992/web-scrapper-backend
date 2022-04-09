@@ -39,24 +39,23 @@ app.use(express.json());
 DBConnection;
 
 app.get('/', function rootHandler(req, res) {
-    if(res.statusCode !== 200) {
+    if (res.statusCode !== 200) {
         throw new Error("Error while routing to '/' ");
     }
-
-    res.end("sucessfully routed to root");
+    res.send("sucessfully routed to root");
 });
 
 // fake route to test sentry config is working
 app.get("/debug-sentry", function mainHandler(req, res) {
     throw new Error("My first Sentry error!");
-  });
+});
 
 app.use(Sentry.Handlers.errorHandler());
 
 app.use(function onError(err, req, res, next) {
     res.statusCode = 500;
     res.end(res.sentry + "\n");
-  });
+});
 
 // import API routes
 require('../app/routes')(app);

@@ -35,24 +35,24 @@ async function getListOfMediaUrl(webUrl) {
             // scrapping Image url for given web url
             const imgList = [];
             const videoList = [];
+            let mediaObj = {};
             const domainName = getDomainName(webUrl);
 
             $("img").each((index, imageElement) => {
                 const imgUrl = $(imageElement).attr("src");
-                let imgObj = {};
 
                 if (webUrl === "https://www.dominos.co.in") {
 
-                    imgObj.uimgUrlrl = webUrl + imgUrl;
-                    imgList.push(imgObj);
+                    mediaObj.imgUrl = webUrl + imgUrl;
+                    imgList.push(mediaObj);
 
                     payloadObject.id = domainName;
                     payloadObject.name = domainName;
                     payloadObject.imgUrlList = imgList;
 
                 } else {
-                    imgObj.imgUrl = imgUrl;
-                    imgList.push(imgObj);
+                    mediaObj.imgUrl = imgUrl;
+                    imgList.push(mediaObj);
 
                     payloadObject.id = domainName;
                     payloadObject.name = domainName;
@@ -66,14 +66,9 @@ async function getListOfMediaUrl(webUrl) {
 
                 $(".findResult").each((index, mediaElement) => {
                     const $mediaElement = $(mediaElement);
-                    // const videoImgUrl = $mediaElement.find('td a img').attr('src');
                     const videoUrl = $mediaElement.find('td a').attr('href');
                     const videoAbsoulteUrl = baseUrl + videoUrl;
-                    videoList.push(videoAbsoulteUrl);
-
-                    // const link = {
-                    //     videoLink: $mediaElement.find('td a').attr('href')
-                    // };
+                    videoList.push({ ...mediaObj, videourl: videoAbsoulteUrl });
 
                     payloadObject.id = domainName;
                     payloadObject.name = domainName;
@@ -85,6 +80,11 @@ async function getListOfMediaUrl(webUrl) {
     });
 };
 
+/**
+ * 
+ * @param {string} weburl - website address (https://www.google.com)
+ * @returns {string} domain name (google)
+ */
 const getDomainName = (weburl) => {
     const splittedName = weburl.split('/');
     const domainName = splittedName[2].split('.')[1];

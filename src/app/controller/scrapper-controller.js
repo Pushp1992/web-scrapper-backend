@@ -33,7 +33,8 @@ const savePayloadData = async (req, res, mediaUrlPayload) => {
     // const { id, url, name = '' , imgUrlList: [], videoUrlList: [] } = mediaUrlPayload;
 
     const mediaPayload = new MediaScrapperModel({
-        id: mediaUrlPayload.id,
+        // We are using domainName as an ID here
+        _id: mediaUrlPayload.id,
         url: mediaUrlPayload.url,
         name: mediaUrlPayload.name,
         imageList: mediaUrlPayload?.imgUrlList || [],
@@ -49,7 +50,7 @@ const savePayloadData = async (req, res, mediaUrlPayload) => {
             });
         }).catch((err) => {
             return res.status(500).send({
-                statusMessage: `unable to create task. Error: ${err.message}`,
+                statusMessage: `unable to scrap webURl ${mediaUrlPayload.url}. Error: ${err.message}`,
                 statusCode: res.statusCode
             });
         });
@@ -86,14 +87,12 @@ exports.getScrappedMediaUrl = async (req, res) => {
 exports.findScrappedMediaUrlById = (req, res) => {
     const id = req.params.id;
 
-    console.log(id);
-
     MediaScrapperModel.findById(id)
         .then((task) => {
             if (!task) {
                 return res.status(404).send({
                     data: task,
-                    message: `Task id: ${id} not found`,
+                    message: `No media Url exist with ${id}`,
                     statusCode: res.statusCode
                 })
             }

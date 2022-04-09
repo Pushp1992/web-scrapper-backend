@@ -3,7 +3,7 @@
 const { scrapMediaLinks } = require('../utils/scrapper-service');
 const MediaScrapperModel = require('../model/scrapper-model');
 
-// fetch all scrapped data
+// Resolve Web URL(s) to fetch media  URL(s)
 exports.resolveMediaUrl = async (req, res) => {
     const REQUEST_BODY = req.body;
 
@@ -24,24 +24,12 @@ exports.resolveMediaUrl = async (req, res) => {
         });
     }
 
-    const saveMediaUrlPayload = await savePayloadData(req, res, mediaUrlPayload);
-
-    console.log('saved data: ', saveMediaUrlPayload);
-
-    // ToDo: send proper response if urls are not scrapped
-
-    // return res.status(200).send({
-    //     statusCode: res.statusCode,
-    //     statusMessage: res?.statusMessage || `Sucessfully scrapped data for ${mediaUrlPayload.url}`
-    // });
-
-    // console.log(REQUEST_BODY);
+    await savePayloadData(req, res, mediaUrlPayload);
 };
 
 const savePayloadData = async (req, res, mediaUrlPayload) => {
 
-    // console.log(mediaUrlPayload);
-
+    // NOTE: Right way to pass value is by destructuring the object rather than passing obj again and again
     // const { id, url, name = '' , imgUrlList: [], videoUrlList: [] } = mediaUrlPayload;
 
     const mediaPayload = new MediaScrapperModel({
@@ -67,6 +55,7 @@ const savePayloadData = async (req, res, mediaUrlPayload) => {
         });
 };
 
+// Get all scrapped data
 exports.getScrappedMediaUrl = async (req, res) => {
     MediaScrapperModel.find()
         .then(task => {
@@ -88,6 +77,43 @@ exports.getScrappedMediaUrl = async (req, res) => {
         .catch(err => {
             res.status(500).send({
                 statusMessage: `${err.message} || unable to fetch Data`,
+                statusCode: res.statusCode
+            })
+        });
+};
+
+// Get scrapped data by id or name
+exports.findScrappedMediaUrlById = (req, res) => {
+    const id = req.params.id;
+
+    console.log(id);
+
+    MediaScrapperModel.findById(id)
+        .then((task) => {
+            if (!task) {
+                return res.status(404).send({
+                    data: task,
+                    message: `Task id: ${id} not found`,
+                    statusCode: res.statusCode
+                })
+            }
+            res.status(200).send({
+                data: task,
+                message: `Successfully fetched data for id: ${id}`,
+                statusCode: res.statusCode
+            });
+        })
+        .catch(err => {
+            if (err.kind === 'ObjectID') {
+                return res.status(400).send({
+                    message: `task not found. ID: ${id}`,
+                    statusCode: res.statusCode
+
+                });
+            }
+
+            return res.status(500).send({
+                message: `Error fetching task. Id: ${id}`,
                 statusCode: res.statusCode
             })
         });

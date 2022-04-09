@@ -11,6 +11,9 @@ module.exports = (app) => {
     // api endpoint to get all scrapped data
     app.get('/fetch', MediaScrapper.getScrappedMediaUrl);
 
+    // api endpoint to find/filter scrapped data
+    app.get('/fetch/:id', MediaScrapper.findScrappedMediaUrlById);
+
     // api endpoint to delete all scrapped data
     app.delete('/delete', MediaScrapper.deleteScrappedMediaUrl);
 };

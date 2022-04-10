@@ -59,20 +59,20 @@ const savePayloadData = async (req, res, mediaUrlPayload) => {
 // Get all scrapped data
 exports.getScrappedMediaUrl = async (req, res) => {
     MediaScrapperModel.find()
-        .then(task => {
-            if (!task || !task.length) {
+        .then(data => {
+            if (!data || !data.length) {
                 return res.status(204).send({
-                    data: task || {},
+                    data: data || {},
                     statusCode: res.statusCode,
                     statusMessage: `Data List is empty`
                 });
             }
 
             res.status(200).send({
-                count: task?.length || 0,
+                count: data?.length || 0,
                 statusMessage: 'Scrapped Data fetched successfully!',
                 statusCode: res.statusCode,
-                data: task,
+                data: data,
             })
         })
         .catch(err => {
@@ -88,16 +88,16 @@ exports.findScrappedMediaUrlById = (req, res) => {
     const id = req.params.id;
 
     MediaScrapperModel.findById(id)
-        .then((task) => {
-            if (!task) {
+        .then((data) => {
+            if (!data) {
                 return res.status(404).send({
-                    data: task,
+                    data: data,
                     message: `No media Url exist with ${id}`,
                     statusCode: res.statusCode
                 })
             }
             res.status(200).send({
-                data: task,
+                data: data,
                 message: `Successfully fetched data for id: ${id}`,
                 statusCode: res.statusCode
             });
@@ -105,14 +105,14 @@ exports.findScrappedMediaUrlById = (req, res) => {
         .catch(err => {
             if (err.kind === 'ObjectID') {
                 return res.status(400).send({
-                    message: `task not found. ID: ${id}`,
+                    message: `data not found. ID: ${id}`,
                     statusCode: res.statusCode
 
                 });
             }
 
             return res.status(500).send({
-                message: `Error fetching task. Id: ${id}`,
+                message: `Error fetching data. Id: ${id}`,
                 statusCode: res.statusCode
             })
         });

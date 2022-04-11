@@ -110,7 +110,7 @@ docker build -t pushp1992/web-scrapper-backend:v1 .
 - Run your image locally
 
 ```
-docker run -d -p 5000:5000 pushp1992/web-scrapper-backend:v1
+docker run -d -p 5001:5000 pushp1992/web-scrapper-backend:v1
 ```
 
 - Push your image to remote

@@ -1,4 +1,5 @@
 const express = require('express');
+const mwBasicAuth = require('./middleware/basic-auth');
 const Sentry = require("@sentry/node");
 const Tracing = require("@sentry/tracing");
 
@@ -7,6 +8,7 @@ require('dotenv').config();
 
 // initialize Database Connection configuration
 const DBConnection = require('../database');
+const { request } = require('express');
 
 const app = express();
 
@@ -34,6 +36,9 @@ app.use(express.urlencoded({
 }));
 
 app.use(express.json());
+
+// basic api authentication
+app.use(mwBasicAuth);
 
 // invoke DBConnection
 DBConnection;

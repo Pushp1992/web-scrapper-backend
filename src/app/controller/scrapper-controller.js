@@ -49,7 +49,7 @@ const savePayloadData = async (req, res, mediaUrlPayload) => {
                 data: data
             });
         }).catch((err) => {
-            return res.status(500).send({
+            return res.status(400).send({
                 statusMessage: `unable to scrap webURl ${mediaUrlPayload.url}. Error: ${err.message}`,
                 statusCode: res.statusCode
             });
@@ -97,7 +97,7 @@ exports.findScrappedMediaUrlById = (req, res) => {
                 })
             }
             res.status(200).send({
-                data: data,
+                data: [data],
                 message: `Successfully fetched data for id: ${id}`,
                 statusCode: res.statusCode
             });
